@@ -1,31 +1,66 @@
-# Sistema de Gerenciamento de Produtos com Logs
+# Sistema de Gerenciamento de Produtos
 
-## Descrição do Projeto
-Este projeto é uma API que permite gerenciar produtos e registrar logs de operações CRUD (criação, atualização e exclusão). A aplicação foi desenvolvida utilizando **Python**, **Flask**, e um banco de dados **SQLite**.
+## Descrição
+Este projeto é um sistema de gerenciamento de produtos que permite cadastrar, atualizar, listar e excluir produtos. Além disso, todas as operações são registradas em uma tabela de logs para rastreamento e auditoria.
 
 ## Funcionalidades
-- **CRUD de Produtos**: Possibilidade de criar, ler, atualizar e deletar produtos.
-- **Registro de Logs**: Sempre que um produto é criado, atualizado ou excluído, a operação é registrada em uma tabela de logs.
-- **Validação de dados**: Regras de validação para garantir que o nome do produto, preço e estoque sejam inseridos corretamente.
-- **Consulta de Logs**: Possibilidade de visualizar todos os logs de operações realizadas.
+- **Gerenciamento de Produtos**
+  - Cadastrar novos produtos.
+  - Atualizar informações de produtos existentes.
+  - Listar todos os produtos ou um produto específico.
+  - Excluir produtos do sistema.
 
-## Testando os Endpoints com Postman
-- Você pode utilizar o [Postman](https://www.postman.com/) para testar os endpoints descritos acima.
-- Para cada endpoint, envie as requisições HTTP adequadas (GET, POST, PUT, DELETE) com os parâmetros e payloads apropriados.
+- **Registro de Logs**
+  - Todas as operações CRUD são registradas com informações detalhadas, como tipo de operação, data e hora, e ID do produto afetado.
 
-## Documentação
-- A documentação detalhada dos endpoints foi feita utilizando o Postman e pode ser visualizada no arquivo `docs/api-documentation.json`.
+## Tecnologias Utilizadas
+- **Banco de Dados**: SQLite
+- **Framework**: [Nome do Framework utilizado, se aplicável]
+- **Documentação da API**: Postman
+
+## Endpoints
+
+### Produtos
+- **GET /produtos**
+  - Retorna todos os produtos.
+  
+- **GET /produtos/{id}**
+  - Retorna o produto com o ID especificado.
+  
+- **POST /produtos**
+  - Cria um novo produto (com validação de campos).
+  
+- **PUT /produtos/{id}**
+  - Atualiza os dados de um produto existente (com validação de campos).
+  
+- **DELETE /produtos/{id}**
+  - Exclui o produto com o ID especificado.
+
+#### Validações de Produtos
+- O nome do produto deve ter no mínimo 3 caracteres.
+- O preço deve ser um valor positivo.
+- O estoque deve ser um número inteiro maior ou igual a zero.
+
+### Logs
+- **GET /logs**
+  - Retorna todos os logs das operações realizadas nos produtos.
+
+## Documentação da API
+A documentação detalhada da API está disponível no Postman e inclui:
+- Descrição dos endpoints.
+- Parâmetros de entrada.
+- Exemplos de requisições e respostas.
+- Códigos de status esperados (200, 400, 404, 500).
+
+## Testes
+Todos os endpoints foram testados utilizando o Postman, e as capturas de tela dos testes estão incluídas no documento de entrega.
 
 ## Relatório Técnico
-- O relatório técnico, explicando como a aplicação foi desenvolvida, incluindo os desafios encontrados e as soluções adotadas, está disponível no arquivo `docs/relatorio_tecnico.pdf`.
+Um relatório final foi elaborado, abordando:
+- O desenvolvimento da aplicação.
+- Implementação dos logs.
+- Funcionamento das validações de campos.
+- Dificuldades encontradas e soluções adotadas.
 
-### Tabela `Produto`
-```sql
-CREATE TABLE Produto (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome TEXT NOT NULL CHECK (LENGTH(nome) >= 3),
-    descricao TEXT,
-    preco REAL NOT NULL CHECK (preco > 0),
-    estoque INTEGER NOT NULL CHECK (estoque >= 0),
-    userInsert TEXT NOT NULL,
-    data_hora TEXT DEFAULT (datetime('now', 'localtime'))
+## Conclusão
+O Sistema de Gerenciamento de Produtos é uma aplicação robusta e eficaz, que garante a integridade dos dados por meio de validações e registros de log, proporcionando uma gestão eficiente dos produtos.
