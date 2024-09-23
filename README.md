@@ -12,7 +12,7 @@ Este projeto é uma API que permite gerenciar produtos e registrar logs de opera
 ## Estrutura do Banco de Dados
 
 ### Tabela `Produto`
-``sql
+```sql
 CREATE TABLE Produto (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT NOT NULL CHECK (LENGTH(nome) >= 3),
