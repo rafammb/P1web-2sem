@@ -9,7 +9,15 @@ Este projeto é uma API que permite gerenciar produtos e registrar logs de opera
 - **Validação de dados**: Regras de validação para garantir que o nome do produto, preço e estoque sejam inseridos corretamente.
 - **Consulta de Logs**: Possibilidade de visualizar todos os logs de operações realizadas.
 
-## Estrutura do Banco de Dados
+## Testando os Endpoints com Postman
+- Você pode utilizar o [Postman](https://www.postman.com/) para testar os endpoints descritos acima.
+- Para cada endpoint, envie as requisições HTTP adequadas (GET, POST, PUT, DELETE) com os parâmetros e payloads apropriados.
+
+## Documentação
+- A documentação detalhada dos endpoints foi feita utilizando o Postman e pode ser visualizada no arquivo `docs/api-documentation.json`.
+
+## Relatório Técnico
+- O relatório técnico, explicando como a aplicação foi desenvolvida, incluindo os desafios encontrados e as soluções adotadas, está disponível no arquivo `docs/relatorio_tecnico.pdf`.
 
 ### Tabela `Produto`
 ```sql
@@ -21,14 +29,3 @@ CREATE TABLE Produto (
     estoque INTEGER NOT NULL CHECK (estoque >= 0),
     userInsert TEXT NOT NULL,
     data_hora TEXT DEFAULT (datetime('now', 'localtime'))
-);
-
-## Testando os Endpoints com Postman
-- Você pode utilizar o [Postman](https://www.postman.com/) para testar os endpoints descritos acima.
-- Para cada endpoint, envie as requisições HTTP adequadas (GET, POST, PUT, DELETE) com os parâmetros e payloads apropriados.
-
-## Documentação
-- A documentação detalhada dos endpoints foi feita utilizando o Postman e pode ser visualizada no arquivo `docs/api-documentation.json`.
-
-## Relatório Técnico
-- O relatório técnico, explicando como a aplicação foi desenvolvida, incluindo os desafios encontrados e as soluções adotadas, está disponível no arquivo `docs/relatorio_tecnico.pdf`.
