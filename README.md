@@ -12,7 +12,16 @@ Este projeto é uma API que permite gerenciar produtos e registrar logs de opera
 ## Estrutura do Banco de Dados
 
 ### Tabela `Produto`
-
+``sql
+CREATE TABLE Produto (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL CHECK (LENGTH(nome) >= 3),
+    descricao TEXT,
+    preco REAL NOT NULL CHECK (preco > 0),
+    estoque INTEGER NOT NULL CHECK (estoque >= 0),
+    userInsert TEXT NOT NULL,
+    data_hora TEXT DEFAULT (datetime('now', 'localtime'))
+);
 
 ## Testando os Endpoints com Postman
 - Você pode utilizar o [Postman](https://www.postman.com/) para testar os endpoints descritos acima.
