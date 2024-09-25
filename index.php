@@ -146,7 +146,7 @@ function buscarLogPorId($logController, $id) {
         $log = $logController->buscarPorId($id);
         
         if ($log) {
-            return json_encode($log); // 
+            return json_encode($log); 
         } else {
             return json_encode(["error" => "Log não encontrado!"]);
         }
