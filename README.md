@@ -15,7 +15,7 @@ Este projeto é um sistema de gerenciamento de produtos que permite cadastrar, a
 
 ## Tecnologias Utilizadas
 - **Banco de Dados**: SQLite
-- **Backend**: Visual Studio Code (PHP)
+- **Backend**: PHP
 - **Documentação da API**: Postman
 
 ## Endpoints
