@@ -7,7 +7,7 @@ require_once 'src/Config/Database.php';
 
 $db = new Database();
 $produtoController = new ProdutoController($db);
-$logController = new LogController($db); // 
+$logController = new LogController($db);
 
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $requestMethod = $_SERVER['REQUEST_METHOD'];
@@ -18,36 +18,70 @@ switch ($requestUri) {
         break;
 
     case '/produtos/criar':
-        echo criarProduto($produtoController);
+        if ($requestMethod === 'POST') {
+            echo criarProduto($produtoController);
+        } else {
+            header("HTTP/1.0 405 Method Not Allowed");
+            echo json_encode(["error" => "Método não permitido"]);
+        }
         break;
 
     case '/produtos/listar':
-        echo listarProdutos($produtoController);
+        if ($requestMethod === 'GET') {
+            echo listarProdutos($produtoController);
+        } else {
+            header("HTTP/1.0 405 Method Not Allowed");
+            echo json_encode(["error" => "Método não permitido"]);
+        }
         break;
 
     case (preg_match('/\/produtos\/buscar\/(\d+)/', $requestUri, $matches) ? true : false):
-        $id = $matches[1];
-        echo buscarProdutoPorId($produtoController, $id);
+        if ($requestMethod === 'GET') {
+            $id = $matches[1];
+            echo buscarProdutoPorId($produtoController, $id);
+        } else {
+            header("HTTP/1.0 405 Method Not Allowed");
+            echo json_encode(["error" => "Método não permitido"]);
+        }
         break;
 
     case (preg_match('/\/produtos\/atualizar\/(\d+)/', $requestUri, $matches) ? true : false):
-        $id = $matches[1];
-        echo atualizarProduto($produtoController, $id);
+        if ($requestMethod === 'PUT') {
+            $id = $matches[1];
+            echo atualizarProduto($produtoController, $id);
+        } else {
+            header("HTTP/1.0 405 Method Not Allowed");
+            echo json_encode(["error" => "Método não permitido"]);
+        }
         break;
 
     case (preg_match('/\/produtos\/deletar\/(\d+)/', $requestUri, $matches) ? true : false):
-        $id = $matches[1];
-        echo deletarProduto($produtoController, $id);
+        if ($requestMethod === 'DELETE') {
+            $id = $matches[1];
+            echo deletarProduto($produtoController, $id);
+        } else {
+            header("HTTP/1.0 405 Method Not Allowed");
+            echo json_encode(["error" => "Método não permitido"]);
+        }
         break;
 
-    
     case '/logs':
-        echo listarLogs($logController);
+        if ($requestMethod === 'GET') {
+            echo listarLogs($logController);
+        } else {
+            header("HTTP/1.0 405 Method Not Allowed");
+            echo json_encode(["error" => "Método não permitido"]);
+        }
         break;
 
     case (preg_match('/\/logs\/(\d+)/', $requestUri, $matches) ? true : false):
-        $id = $matches[1];
-        echo buscarLogPorId($logController, $id); // 
+        if ($requestMethod === 'GET') {
+            $id = $matches[1];
+            echo buscarLogPorId($logController, $id);
+        } else {
+            header("HTTP/1.0 405 Method Not Allowed");
+            echo json_encode(["error" => "Método não permitido"]);
+        }
         break;
 
     default:
@@ -55,8 +89,6 @@ switch ($requestUri) {
         echo json_encode(["error" => "Rota não encontrada"]);
         break;
 }
-
-
 
 function criarProduto($produtoController) {
     try {
@@ -69,16 +101,22 @@ function criarProduto($produtoController) {
         ];
 
         $id = $produtoController->criar($novoProduto);
-        return json_encode(["success" => true, "id" => $id]);
+        http_response_code(201); // Código de status 201 Created
+        return json_encode([
+            "success" => true,
+            "id" => $id,
+            "message" => "Produto criado com sucesso!"
+        ]);
     } catch (Exception $e) {
-        return json_encode(["success" => false, "error" => $e->getMessage()]);
+        header("HTTP/1.0 400 Bad Request");
+        return json_encode(["error" => $e->getMessage()]);
     }
 }
 
 function listarProdutos($produtoController) {
     try {
         $produtos = $produtoController->listar();
-        return json_encode($produtos); // 
+        return json_encode($produtos);
     } catch (Exception $e) {
         header("HTTP/1.0 500 Internal Server Error");
         return json_encode(["error" => $e->getMessage()]);
@@ -90,7 +128,7 @@ function buscarProdutoPorId($produtoController, $id) {
         $produto = $produtoController->buscarPorId($id);
         
         if ($produto) {
-            return json_encode($produto); // 
+            return json_encode($produto);
         } else {
             return json_encode(["error" => "Produto não encontrado!"]);
         }
@@ -101,7 +139,6 @@ function buscarProdutoPorId($produtoController, $id) {
 }
 
 function atualizarProduto($produtoController, $id) {
-
     try {
         $dadosAtualizados = [
             'nome' => 'Produto Atualizado',
@@ -146,7 +183,7 @@ function buscarLogPorId($logController, $id) {
         $log = $logController->buscarPorId($id);
         
         if ($log) {
-            return json_encode($log); 
+            return json_encode($log);
         } else {
             return json_encode(["error" => "Log não encontrado!"]);
         }
