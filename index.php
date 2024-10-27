@@ -7,7 +7,7 @@ require_once 'src/Config/Database.php';
 
 $db = new Database();
 $produtoController = new ProdutoController($db);
-$logController = new LogController($db); // 
+$logController = new LogController($db);
 
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $requestMethod = $_SERVER['REQUEST_METHOD'];
@@ -18,7 +18,12 @@ switch ($requestUri) {
         break;
 
     case '/produtos/criar':
-        echo criarProduto($produtoController);
+        if ($requestMethod === 'POST') {
+            echo criarProduto($produtoController);
+        } else {
+            header("HTTP/1.0 405 Method Not Allowed");
+            echo json_encode(["error" => "Método não permitido. Use POST para criar um produto."]);
+        }
         break;
 
     case '/produtos/listar':
@@ -32,22 +37,31 @@ switch ($requestUri) {
 
     case (preg_match('/\/produtos\/atualizar\/(\d+)/', $requestUri, $matches) ? true : false):
         $id = $matches[1];
-        echo atualizarProduto($produtoController, $id);
+        if ($requestMethod === 'PUT') {
+            echo atualizarProduto($produtoController, $id);
+        } else {
+            header("HTTP/1.0 405 Method Not Allowed");
+            echo json_encode(["error" => "Método não permitido. Use PUT para atualizar um produto."]);
+        }
         break;
 
     case (preg_match('/\/produtos\/deletar\/(\d+)/', $requestUri, $matches) ? true : false):
         $id = $matches[1];
-        echo deletarProduto($produtoController, $id);
+        if ($requestMethod === 'DELETE') {
+            echo deletarProduto($produtoController, $id);
+        } else {
+            header("HTTP/1.0 405 Method Not Allowed");
+            echo json_encode(["error" => "Método não permitido. Use DELETE para excluir um produto."]);
+        }
         break;
 
-    
     case '/logs':
         echo listarLogs($logController);
         break;
 
     case (preg_match('/\/logs\/(\d+)/', $requestUri, $matches) ? true : false):
         $id = $matches[1];
-        echo buscarLogPorId($logController, $id); // 
+        echo buscarLogPorId($logController, $id);
         break;
 
     default:
@@ -56,15 +70,15 @@ switch ($requestUri) {
         break;
 }
 
-
-
 function criarProduto($produtoController) {
     try {
+        $data = json_decode(file_get_contents("php://input"), true);
+        
         $novoProduto = [
-            'nome' => 'Produto Teste',
-            'descricao' => 'Descrição de Teste',
-            'preco' => 49.99,
-            'estoque' => 100,
+            'nome' => $data['nome'] ?? 'Produto Teste',
+            'descricao' => $data['descricao'] ?? 'Descrição de Teste',
+            'preco' => $data['preco'] ?? 49.99,
+            'estoque' => $data['estoque'] ?? 100,
             'userInsert' => 'admin'
         ];
 
@@ -78,7 +92,7 @@ function criarProduto($produtoController) {
 function listarProdutos($produtoController) {
     try {
         $produtos = $produtoController->listar();
-        return json_encode($produtos); // 
+        return json_encode($produtos);
     } catch (Exception $e) {
         header("HTTP/1.0 500 Internal Server Error");
         return json_encode(["error" => $e->getMessage()]);
@@ -90,7 +104,7 @@ function buscarProdutoPorId($produtoController, $id) {
         $produto = $produtoController->buscarPorId($id);
         
         if ($produto) {
-            return json_encode($produto); // 
+            return json_encode($produto);
         } else {
             return json_encode(["error" => "Produto não encontrado!"]);
         }
@@ -101,13 +115,14 @@ function buscarProdutoPorId($produtoController, $id) {
 }
 
 function atualizarProduto($produtoController, $id) {
-
     try {
+        $data = json_decode(file_get_contents("php://input"), true);
+        
         $dadosAtualizados = [
-            'nome' => 'Produto Atualizado',
-            'descricao' => 'Descrição Atualizada',
-            'preco' => 59.99,
-            'estoque' => 150,
+            'nome' => $data['nome'] ?? 'Produto Atualizado',
+            'descricao' => $data['descricao'] ?? 'Descrição Atualizada',
+            'preco' => $data['preco'] ?? 59.99,
+            'estoque' => $data['estoque'] ?? 150,
             'userInsert' => 'admin'
         ];
 
@@ -124,7 +139,7 @@ function atualizarProduto($produtoController, $id) {
 
 function deletarProduto($produtoController, $id) {
     try {
-        $produtoController->deletar($id, 'admin'); 
+        $produtoController->deletar($id, 'admin');
         return json_encode(["success" => true, "message" => "Produto excluído com sucesso!"]);
     } catch (Exception $e) {
         return json_encode(["success" => false, "error" => $e->getMessage()]);
@@ -146,7 +161,7 @@ function buscarLogPorId($logController, $id) {
         $log = $logController->buscarPorId($id);
         
         if ($log) {
-            return json_encode($log); 
+            return json_encode($log);
         } else {
             return json_encode(["error" => "Log não encontrado!"]);
         }
