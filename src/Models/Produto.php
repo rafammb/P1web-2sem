@@ -38,4 +38,3 @@ class Produto {
         return $stmt->execute([$id]);
     }
 }
-?>

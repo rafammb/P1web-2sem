@@ -1,9 +1,9 @@
-<?php
-require_once 'src/Models/Produto.php';
-require_once 'src/Models/Log.php';
-require_once 'src/Controllers/LogController.php';
-require_once 'src/Controllers/ProdutoController.php';
-require_once 'src/Config/Database.php';
+<?php 
+require __DIR__ . '/../src/Models/Produto.php';
+require __DIR__ . '/../src/Models/Log.php';
+require __DIR__ . '/../src/Controllers/LogController.php';
+require __DIR__ . '/../src/Controllers/ProdutoController.php';
+require __DIR__ . '/../src/Config/Database.php';
 
 $db = new Database();
 $produtoController = new ProdutoController($db);
@@ -14,54 +14,39 @@ $requestMethod = $_SERVER['REQUEST_METHOD'];
 
 switch ($requestUri) {
     case '/':
-        echo "Bem-vindo ao sistema de gerenciamento de produtos!";
+        echo file_get_contents('index.html'); 
         break;
 
-    case '/produtos/criar':
-        if ($requestMethod === 'POST') {
+    case '/api/produtos':
+        if ($requestMethod === 'GET') {
+            echo listarProdutos($produtoController);
+        } elseif ($requestMethod === 'POST') {
             echo criarProduto($produtoController);
-        } else {
-            header("HTTP/1.0 405 Method Not Allowed");
-            echo json_encode(["error" => "Método não permitido. Use POST para criar um produto."]);
         }
         break;
 
-    case '/produtos/listar':
-        echo listarProdutos($produtoController);
-        break;
-
-    case (preg_match('/\/produtos\/buscar\/(\d+)/', $requestUri, $matches) ? true : false):
+    case (preg_match('/\/api\/produtos\/(\d+)/', $requestUri, $matches) ? true : false):
         $id = $matches[1];
-        echo buscarProdutoPorId($produtoController, $id);
-        break;
-
-    case (preg_match('/\/produtos\/atualizar\/(\d+)/', $requestUri, $matches) ? true : false):
-        $id = $matches[1];
-        if ($requestMethod === 'PUT') {
+        if ($requestMethod === 'GET') {
+            echo buscarProdutoPorId($produtoController, $id);
+        } elseif ($requestMethod === 'PUT') {
             echo atualizarProduto($produtoController, $id);
-        } else {
-            header("HTTP/1.0 405 Method Not Allowed");
-            echo json_encode(["error" => "Método não permitido. Use PUT para atualizar um produto."]);
-        }
-        break;
-
-    case (preg_match('/\/produtos\/deletar\/(\d+)/', $requestUri, $matches) ? true : false):
-        $id = $matches[1];
-        if ($requestMethod === 'DELETE') {
+        } elseif ($requestMethod === 'DELETE') {
             echo deletarProduto($produtoController, $id);
-        } else {
-            header("HTTP/1.0 405 Method Not Allowed");
-            echo json_encode(["error" => "Método não permitido. Use DELETE para excluir um produto."]);
         }
         break;
 
-    case '/logs':
-        echo listarLogs($logController);
+    case '/api/logs':
+        if ($requestMethod === 'GET') {
+            echo listarLogs($logController);
+        }
         break;
 
-    case (preg_match('/\/logs\/(\d+)/', $requestUri, $matches) ? true : false):
+    case (preg_match('/\/api\/logs\/(\d+)/', $requestUri, $matches) ? true : false):
         $id = $matches[1];
-        echo buscarLogPorId($logController, $id);
+        if ($requestMethod === 'GET') {
+            echo buscarLogPorId($logController, $id);
+        }
         break;
 
     default:
@@ -69,6 +54,7 @@ switch ($requestUri) {
         echo json_encode(["error" => "Rota não encontrada"]);
         break;
 }
+
 
 function criarProduto($produtoController) {
     try {

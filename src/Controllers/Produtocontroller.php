@@ -11,7 +11,6 @@ class ProdutoController {
         $this->produto = new Produto($db);
         $this->log = new Log($db);
     }
-
     public function listar() {
         try {
             $produtos = $this->produto->listar();
@@ -20,7 +19,6 @@ class ProdutoController {
             return json_encode(["success" => false, "error" => $e->getMessage()]);
         }
     }
-
     public function buscarPorId($id) {
         try {
             $produto = $this->produto->buscarPorId($id);
@@ -37,15 +35,16 @@ class ProdutoController {
     public function criar($dados) {
         try {
             $id = $this->produto->criar($dados);
+            $this->log->registrar('criação', $id, $dados['userInsert']); 
             return json_encode(["success" => true, "message" => "Produto criado com ID: $id"]);
         } catch (Exception $e) {
             return json_encode(["success" => false, "error" => $e->getMessage()]);
         }
     }
-
     public function atualizar($id, $dados) {
         try {
             if ($this->produto->atualizar($id, $dados)) {
+                $this->log->registrar('atualização', $id, $dados['userInsert']);
                 return json_encode(["success" => true, "message" => "Produto atualizado com sucesso!"]);
             } else {
                 return json_encode(["success" => false, "error" => "Produto não encontrado ou não atualizado."]);
@@ -54,12 +53,11 @@ class ProdutoController {
             return json_encode(["success" => false, "error" => $e->getMessage()]);
         }
     }
-
-    public function deletar($id, $userInsert) {
+        public function deletar($id, $userInsert) {
         try {
             $produtoExistente = $this->produto->buscarPorId($id);
             if (!$produtoExistente) {
-                return json_encode(["success" => false, "error" => "Produto com id $id não encontrado."]);
+                return json_encode(["success" => false, "error" => "Produto com ID $id não encontrado."]);
             }
 
             if ($this->produto->deletar($id)) {
@@ -71,4 +69,3 @@ class ProdutoController {
         }
     }
 }
-?>

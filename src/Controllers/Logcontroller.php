@@ -34,4 +34,3 @@ class LogController {
         return $this->log->registrar($acao, $produtoId, $userInsert);
     }
 }
-?>
