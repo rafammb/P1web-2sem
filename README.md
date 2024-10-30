@@ -47,7 +47,8 @@ Para tornar o projeto mais realista, incluímos a integração com um backend pa
 - **Validação de Dados de Entrada**: Validação dos dados diretamente no Vue.js antes de enviá-los ao backend, garantindo integridade e consistência.
 
 ## 📥Funcionamento
-- **Lista de Produtos**: A `lista de produto` e `logs` é disponibilizada através de um Link na nossa aplicação, onde ao clicar, ela te direciona diretamente a lista completa com todos produtos criados.
+- **Lista de Produtos**: A `lista de produto` e `logs` é disponibilizada através de um Link na nossa aplicação, onde ao clicar, ela te direciona diretamente a lista completa com todos produtos criados e logs
+realizados.
 
 ## 🔍 Pontos para Pesquisas Futuras
 
