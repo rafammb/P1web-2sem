@@ -46,7 +46,7 @@ Para tornar o projeto mais realista, incluímos a integração com um backend pa
 - **Solicitações HTTP**: Uso das bibliotecas Fetch ou Axios para criar, listar, atualizar e excluir dados com chamadas HTTP para o backend.
 - **Validação de Dados de Entrada**: Validação dos dados diretamente no Vue.js antes de enviá-los ao backend, garantindo integridade e consistência.
 
-## Funcionamento
+## 📥Funcionamento
 - **Lista de Produtos**: A lista de produto é usada como Link na nossa aplicação, onde ao clicar, ela te direciona diretamente a lista completa com todos produtos criados.
 
 ## 🔍 Pontos para Pesquisas Futuras
