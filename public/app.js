@@ -8,6 +8,8 @@ Vue.component('produto-log-manager', {
                 <input v-model="novoProduto.preco" type="number" placeholder="Preço" required>
                 <input v-model="novoProduto.estoque" type="number" placeholder="Estoque" required>
                 <button type="submit">Criar Produto</button>
+                <button @click.prevent="atualizarProduto">Atualizar</button>
+                <button @click.prevent="deletarProduto(novoProduto.id)">Deletar</button>
                 <button @click.prevent="cancelar">Cancelar</button>
             </form>
 
@@ -36,7 +38,8 @@ Vue.component('produto-log-manager', {
                 nome: '',
                 descricao: '',
                 preco: 0,
-                estoque: 0
+                estoque: 0,
+                id: null // Adicione um ID para deletar o produto correto
             }
         };
     },
@@ -75,9 +78,12 @@ Vue.component('produto-log-manager', {
             .then(data => {
                 console.log('Produto criado:', data);
                 this.carregarProdutos();
-                this.novoProduto = { nome: '', descricao: '', preco: 0, estoque: 0 };
+                this.novoProduto = { nome: '', descricao: '', preco: 0, estoque: 0, id: null };
             })
             .catch(error => console.error('Erro ao criar produto:', error));
+        },
+        atualizarProduto() {
+            console.log('Atualizar produto - lógica a ser implementada');
         },
         editarProduto(produto) {
             const novoNome = prompt('Novo nome:', produto.nome);
@@ -123,7 +129,7 @@ Vue.component('produto-log-manager', {
             }
         },
         cancelar() {
-            this.novoProduto = { nome: '', descricao: '', preco: 0, estoque: 0 };
+            this.novoProduto = { nome: '', descricao: '', preco: 0, estoque: 0, id: null };
         }
     }
 });
