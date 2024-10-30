@@ -55,7 +55,6 @@ switch ($requestUri) {
         break;
 }
 
-
 function criarProduto($produtoController) {
     try {
         $data = json_decode(file_get_contents("php://input"), true);
@@ -78,7 +77,7 @@ function criarProduto($produtoController) {
 function listarProdutos($produtoController) {
     try {
         $produtos = $produtoController->listar();
-        return json_encode($produtos);
+        return json_encode(["success" => true, "data" => $produtos]);
     } catch (Exception $e) {
         header("HTTP/1.0 500 Internal Server Error");
         return json_encode(["error" => $e->getMessage()]);
@@ -90,7 +89,7 @@ function buscarProdutoPorId($produtoController, $id) {
         $produto = $produtoController->buscarPorId($id);
         
         if ($produto) {
-            return json_encode($produto);
+            return json_encode(["success" => true, "data" => $produto]);
         } else {
             return json_encode(["error" => "Produto não encontrado!"]);
         }
@@ -135,7 +134,7 @@ function deletarProduto($produtoController, $id) {
 function listarLogs($logController) {
     try {
         $logs = $logController->listar();
-        return json_encode($logs);
+        return json_encode(["success" => true, "data" => $logs]);
     } catch (Exception $e) {
         header("HTTP/1.0 500 Internal Server Error");
         return json_encode(["error" => $e->getMessage()]);
@@ -147,7 +146,7 @@ function buscarLogPorId($logController, $id) {
         $log = $logController->buscarPorId($id);
         
         if ($log) {
-            return json_encode($log);
+            return json_encode(["success" => true, "data" => $log]);
         } else {
             return json_encode(["error" => "Log não encontrado!"]);
         }
