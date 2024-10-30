@@ -6,6 +6,7 @@ Este projeto foi desenvolvido com o objetivo de proporcionar conhecimento práti
 
 - [Objetivo](#objetivo)
 - [Conteúdos Abordados](#conteúdos-abordados)
+- [Funcionamento](#-Funcionamento)
   - [1. Conceitos Básicos de Vue.js](#1-conceitos-básicos-de-vuejs)
   - [2. Componentes Vue.js](#2-componentes-vuejs)
   - [3. Integração Vue.js com Backend](#3-integração-vuejs-com-backend)
@@ -36,7 +37,7 @@ Nesta seção, são explorados os fundamentos do Vue.js para construção de int
 Componentes são a base do Vue.js para construir interfaces modulares e reutilizáveis. Aqui, abordamos:
 
 - **Criação e Uso de Componentes**: Conceitos para dividir a aplicação em pequenos componentes reutilizáveis, mantendo a organização e a escalabilidade.
-- **Comunicação entre Componentes**: Técnicas para passagem de dados entre componentes pai e filho usando `props` e `emit` para eventos personalizados.
+- **Comunicação entre Componentes**: Técnicas para passagem de dados entre componentes pai e filho usando `props` para eventos personalizados.
 
 ### 3. Integração Vue.js com Backend
 
@@ -44,6 +45,9 @@ Para tornar o projeto mais realista, incluímos a integração com um backend pa
 
 - **Solicitações HTTP**: Uso das bibliotecas Fetch ou Axios para criar, listar, atualizar e excluir dados com chamadas HTTP para o backend.
 - **Validação de Dados de Entrada**: Validação dos dados diretamente no Vue.js antes de enviá-los ao backend, garantindo integridade e consistência.
+
+## Funcionamento
+- **Lista de Produtos**: A lista de produto é usada como Link na nossa aplicação, onde ao clicar, ela te direciona diretamente a lista completa com todos produtos criados.
 
 ## 🔍 Pontos para Pesquisas Futuras
 
